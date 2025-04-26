@@ -14,6 +14,7 @@ from email.policy import default
 from pathlib import Path
 
 from decouple import config
+import dj_database_url
 from dj_database_url import parse as dburl
 from django.conf.global_settings import STATIC_ROOT
 from django.views import defaults
@@ -80,10 +81,11 @@ WSGI_APPLICATION = 'eventex.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-default_dburl = 'sqlite:///'+ str(BASE_DIR / 'db.sqlite3')
+default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 DATABASES = {
-    'dafault':config('DATABASE_URL',default=default_dburl,cast=default_dburl),
-
+    'default': dj_database_url.parse(
+        config('DATABASE_URL', default=default_dburl)
+    )
 }
 
 
